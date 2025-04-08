@@ -47,3 +47,5 @@
 **/CMakeTmp
 **/CMakeLists.txt.user
 **/cmake_install.cmake 
+report-figures.svg
+.vscode/settings.json

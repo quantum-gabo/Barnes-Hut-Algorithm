@@ -45,21 +45,45 @@ int main() {
         return 1;
     }
 
-    float dt = 0.0001f;
+    float dt = 0.001f;
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     // Generate random bodies
     std::vector<Body> bodies;
-    for (int i = 0; i < 500; ++i) {
-        float x = static_cast<float>(std::rand() % 800);
-        float y = static_cast<float>(std::rand() % 600);
-        //float vx = static_cast<float>(std::rand() % 100); // Random velocity between 0 and 100
-        //float vy = static_cast<float>(std::rand() % 100); // Random velocity between 0 and 100
-        float vx = 0.0f, vy = 0.0f;
-        float mass = 500.0f + std::rand() % 1000;
-        float r = 2.0f;
-        bodies.push_back(Body(Vec2D(x, y), Vec2D(vx, vy), mass, r));
+    Vec2D center(400.0f, 300.0f); // Center of the screen
+    float centralMass = 50000.0f;
+
+    // Central body (massive, will stay nearly fixed due to its mass)
+    bodies.push_back(Body(center, Vec2D(0, 0), centralMass, 4.0f));
+
+    // Create circular orbiting bodies
+    int numOrbitingBodies = 2000;
+    float G = 1.0f;
+
+    for (int i = 0; i < numOrbitingBodies; ++i) {
+        float angle = 2 * M_PI * i / numOrbitingBodies;
+        float radius = 80.0f + static_cast<float>(rand() % 100); // Between 80 and 230
+
+        // Position on the circle
+        Vec2D offset(std::cos(angle), std::sin(angle));
+        Vec2D pos = center + offset * radius;
+
+        // Tangential velocity direction (perpendicular to position vector)
+        Vec2D tangential(-offset.y, offset.x);
+
+        // Calculate orbital speed for circular orbit
+        float speed = std::sqrt(G * centralMass / radius);
+        Vec2D vel = tangential * speed;
+
+        bodies.push_back(Body(pos, vel, 1.0f, 1.0f));
     }
+
+
+// Generate bodies for the two clusters
+
+    
+    
+    
 
     BruteForceSimulator simulator(bodies, dt);
 
@@ -111,7 +135,7 @@ int main() {
             }
         }
 
-        simulator.run(5);
+        simulator.run(1);
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);

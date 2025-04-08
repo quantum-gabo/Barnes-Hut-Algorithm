@@ -48,7 +48,7 @@ juan.balarezo@yachaytech.edu.ec}
 \maketitle
 
 \begin{abstract}
-  The N-body problem, which simulates the evolution of a system of particles interacting through a gravitational field, holds significant computational challenges due to its inherent complexity. In this project, we implement and compare two approaches to N-body simulations: a brute force method and the Barnes-Hut algorithm. The brute force method computes pairwise gravitational forces between all particles (bodies), which results in an $\mathcal{O}(N^2)$ time complexity--ensuring accuracy but poorly scaling with large systems. Conversely, the Barnes-Hut algorithm leverages a hierarchical tree structure-- quad-tree for 2D and octree for 3D--to approximate distant forces, achieving a time complexity of $\mathcal{O}(N\log N)$ and improving performance for large-scale simulations. Both methods were implemented in \texttt{C++}, using Object Oriented Programming (OOP), \texttt{SDL} library for graphics 
+  The N-body problem, which simulates the evolution of a system of particles interacting through a gravitational field, holds significant computational challenges due to its inherent complexity. In this project, we implement and compare two approaches to N-body simulations: a brute force method and the Barnes-Hut algorithm. The brute force method computes pairwise gravitational forces between all particles (bodies), which results in an $\mathcal{O}(N^2)$ time complexity--ensuring accuracy but poorly scaling with large systems. Conversely, the Barnes-Hut algorithm leverages a hierarchical tree structure-- quadtree for 2D and octree for 3D--to approximate distant forces, achieving a time complexity of $\mathcal{O}(N\log N)$ and improving performance for large-scale simulations. Both methods were implemented in \texttt{C++}, using Object Oriented Programming (OOP), \texttt{SDL} library for graphics 
   rendering and \texttt{CMake} for project management. Preliminary results feature the trade-offs between computational cost and precision, with brute force excelling in small systems and Barnes-Hut outperforming it as N increases. This work details the algorithms, their implementations, and performance comparisons, offering insights into their practical applications and limitations. Future improvements, such as parallelisation, could further refine the performance of these algorithms. 
 \end{abstract}
 
@@ -141,7 +141,7 @@ Now that we have all the necessary equations, we can write the pseudo code for t
   \caption{\textbf{Brute Force Method}}
   \label{alg:brute_force}
   \begin{algorithmic}[1]
-    \STATE Initialise positions and velocities of $N$ bodies
+    \STATE Initialize positions and velocities of $N$ bodies
     \STATE Set time step $\Delta t$
     \WHILE{simulation not finished}
       \FOR{$i=1$ to $N$}
@@ -154,7 +154,7 @@ Now that we have all the necessary equations, we can write the pseudo code for t
 \end{algorithm}
 
 \section{The Barnes-Hut Algorithm}\label{sec:barnes-hut}
-As previously mentioned, the direct method scales poorly with large systems, and hence, we need to find a more efficient way to compute the forces acting on each body. The Barnes-Hut algorithm is an approximation algorithm for performing an N-body simulation with a time complexity of $\mathcal{O}(N\log N)$. The main idea is to approximate long-range forces by replacing a group of distant bodies with their centre of mass. In exchange for a small loss of precision, this scheme significantly speeds up calculations. 
+As previously mentioned, the direct method scales poorly with large systems, and hence, we need to find a more efficient way to compute the forces acting on each body. The Barnes-Hut algorithm is an approximation algorithm for performing an N-body simulation with a time complexity of $\mathcal{O}(N\log N)$. The main idea is to approximate long-range forces by replacing a group of distant bodies with their center of mass. In exchange for a small loss of precision, this scheme significantly speeds up calculations. 
 
 \subsection{Quad Tree Construction}
 Figure \ref{fig:quadtree} shows the quad tree construction. The steps can be summarised as follows:
@@ -168,15 +168,15 @@ Figure \ref{fig:quadtree} shows the quad tree construction. The steps can be sum
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.4\textwidth]{./barnes-hut.png}
-  \caption{Quadtree construction. Each node represents a quadrant and stores the centre of mass of its child nodes and the position of the centre of mass.}
+  \caption{Quadtree construction. Each node represents a quadrant and stores the center of mass of its child nodes and the position of the center of mass.}
   \label{fig:quadtree}
 \end{figure}
 
-Additionally, we store the centre of mass of each node computed as follows: 
+Additionally, we store the center of mass of each node computed as follows: 
 \begin{equation}
   \mathbf{r}_{cm} = \frac{\sum_{i=1}^{N} m_i \mathbf{r}_i}{\sum_{i=1}^{N} m_i}
 \end{equation}
-where $\mathbf{r}_{cm}$ is the position of the centre of mass, $m_i$ is the mass of body $i$, and $\mathbf{r}_i$ is its position. Moreover, we also need to compute the total mass of the node, which is given by:
+where $\mathbf{r}_{cm}$ is the position of the center of mass, $m_i$ is the mass of body $i$, and $\mathbf{r}_i$ is its position. Moreover, we also need to compute the total mass of the node, which is given by:
 \begin{equation}
   M_{cm} = \sum_{i=1}^{N} m_i
 \end{equation}
@@ -186,7 +186,7 @@ Finally, we need to define a condition such that nearby interactions are compute
 \begin{equation}
   \frac{d}{D} < \theta 
 \end{equation}
-where $d$ is the distance between the body and the centre of mass of the node, $D$ is the size of the node, and $\theta$ is a parameter that determines the accuracy of the approximation. If the condition is satisfied, we can use the centre of mass to compute the force acting on the body. Otherwise, we need to compute the forces acting on each body in the node using the direct method.
+where $d$ is the distance between the body and the center of mass of the node, $D$ is the size of the node, and $\theta$ is a parameter that determines the accuracy of the approximation. If the condition is satisfied, we can use the center of mass to compute the force acting on the body. Otherwise, we need to compute the forces acting on each body in the node using the direct method.
 
 %\textbf{The implementation is on an early stage, so there is room for further improvement and optimisation. Here I will only include the header files to keep the report as clean as possible. 
 %
