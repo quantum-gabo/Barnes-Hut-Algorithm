@@ -14,5 +14,3 @@ struct Body {
     void update(float dt,
          void (*integrator)(Body&, float));
 };
-
-

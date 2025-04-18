@@ -5,6 +5,7 @@
 #include "../include/Body.h"
 #include "../include/verletIntegrator.h"
 #include "../include/BruteForceSimulator.h"
+#include <gif_lib.h> // Include giflib
 #include <vector>
 #include <cstdlib> // For random number generation
 #include <ctime>   // For time-based seed
@@ -57,7 +58,7 @@ int main() {
     bodies.push_back(Body(center, Vec2D(0, 0), centralMass, 4.0f));
 
     // Create circular orbiting bodies
-    int numOrbitingBodies = 2000;
+    int numOrbitingBodies = 500;
     float G = 1.0f;
 
     for (int i = 0; i < numOrbitingBodies; ++i) {
